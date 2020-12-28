@@ -1,0 +1,61 @@
+﻿@model App.Core.Security.Web.ViewModels.User.CreateUserViewModel
+
+    <div class="form-row">
+        <input asp-for="RowVersion" type="hidden" />
+
+        <div class="col-md-12 mb-3">
+            <label asp-for="FirstName" class="control-label "></label>
+            
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" ></span>
+          
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label asp-for="LastName" class=" control-label"></label>
+            
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" ></span>
+            
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label asp-for="Email" class=" control-label"></label>
+           
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" ></span>
+            
+        </div>
+
+        @if (Model.RowVersion == 0)
+        {
+            
+
+            <div class="col-md-12 mb-3">
+                <label asp-for="UserName" class=" control-label"></label>
+                       
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" ></span>
+                        
+            </div>
+                    
+                
+        }
+
+        @for (var i = 0; i < Model.UserRoles.Count(); i++)
+        {
+            <div class="col-md-12 mb-3">
+                
+                <div class="col-md-9">
+                    <div>
+                        <input type="checkbox" asp-for="@Model.UserRoles[i].IsAssigned">
+                        <label>
+                            @Model.UserRoles[i].Name
+                        </label>
+                    </div>
+                    <input asp-for="@Model.UserRoles[i].Name" type="hidden" />
+                </div>
+            </div>
+        }
+
+    </div>

@@ -1,0 +1,28 @@
+﻿@model App.CoreLib.EF.Data.Identity.AppRole
+<!-- input hidden -->
+
+    
+    <div class="form-row">
+        <input asp-for="RowVersion" type="hidden" />
+
+        @if (Model.RowVersion == 0)
+        {
+            <div class="col-md-12 mb-3">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" ></span>
+            </div>
+        }
+
+        <div class="col-md-12 mb-3">
+            <label asp-for="Product"></label>
+            <div>
+                <input asp-for="Product" class="form-control" />
+                    <span asp-validation-for="Product" ></span>
+                
+            </div>
+        </div>
+
+    </div>
+<!-- /.col-md-6 -->
+

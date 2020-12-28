@@ -1,0 +1,115 @@
+﻿@model App.Core.Web.AppControllers.InquiryDefinition
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{ 
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+@Html.Partial("~/Views/Shared/_InquiryIndex.cshtml", Model)
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            var inquiryUrl = '@Model.ReadDataAction';
+            var editUrl = '@Model.MaintenanceAction';
+            var deleteUrl = '@Model.DeleteAction';
+            var columns = [
+                { "title": "Id", "data": "id", "name" : "id", "searchable": true, "autoWidth": true },
+                { "title": "Code", "data": "code", "name" : "code", "searchable": true, "autoWidth": true },
+                { "title": "Name", "data": "name", "name" : "name", "searchable": true, "autoWidth": true },
+            ];
+            if(editUrl != '')
+            {
+                columns.push({  
+                    "render": function (data, type, full, meta)  
+                    { return '<a class="btn btn-info" href="@Model.MaintenanceAction?id=' + full.id + '"><i class="fa fa-pencil"></i> Edit</a>'; }  
+                });
+            }
+            if(deleteUrl != '')
+            {
+                columns.push({  
+                    data: null, render: function (data, type, row)  
+                    {  
+                        return "<a href='#' class='btn btn-danger' onclick=DeleteData('" + row.id + "', deleteUrl); >Delete</a>";  
+                    }  
+                });
+            }
+
+            var gridheight = calcEnquiryGridHeight();
+            JqueryDataTable("#@Model.ModelName-data-table", inquiryUrl, columns, gridheight, null, true);
+        });
+
+        function DeleteData(CustomerID, deleteUrl)  
+        {  
+            if (confirm("Are you sure you want to delete ...?"))  
+            {  
+                Delete(CustomerID, deleteUrl);  
+            }  
+            else  
+            {  
+                return false;  
+            }  
+        }
+  
+        function Delete(CustomerID, deleteUrl)  
+        {  
+            var url = deleteUrl;  
+    
+                $.post(url, { ID: CustomerID }, function (data)  
+                    {  
+                        if (data)  
+                        {  
+                            oTable = $('#example').DataTable();  
+                            oTable.draw();  
+                        }  
+                        else  
+                        {  
+                            alert("Something Went Wrong!");  
+                        }  
+                    });  
+        }  
+
+    $('#addSelected').click(function () {
+        var table = $("#@Model.ModelName-data-table").DataTable();
+        console.log("Selected rows: " + table.rows({ selected: true }).data().length);
+
+        var data = $.map(table.rows({ selected: true }).data(), function (item) {
+            console.log(item)
+            return item;
+        });
+        //Call your MVC Controller/API to do the update (pass data)
+        var id = $('#Id').val();
+        var requestItem =
+        {
+            RoleId: id,
+            SelectedItems: data
+        };
+        
+        addData(requestItem);
+
+    });
+    function addData(data) {
+        //Add your controller name to url
+        /*POST*/
+        var addUrl = '@Url.Action("AddSelected", controllerName)';
+        $.ajax({
+            url: addUrl,
+            dataType: "json",
+            type: "POST",
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            cache: false,
+            success: function (response) {
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                }
+            },
+            error: function (xhr) {
+                alert('error');
+            }
+            })
+    }
+
+    </script>
+}
+

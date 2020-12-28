@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+  <!-- <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\App.Angular\bin\Debug\netcoreapp3.1\Modules\</OutputPath>
+  </PropertyGroup> -->
+  <ItemGroup>
+    <ProjectReference Include="..\App.Core.Security.Business\App.Core.Security.Business.csproj" />
+  </ItemGroup>
+
+</Project>
