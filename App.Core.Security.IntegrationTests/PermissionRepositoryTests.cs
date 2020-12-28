@@ -25,12 +25,13 @@ namespace App.Core.Security.IntegrationTests
             permissionRepository = new Repository<Permission>(context);
         }
         [Test]
+        [Ignore("Testing with database doesnot work online")]
         public void SaveShouldReturnNoError()
         {
             RunTest(() =>
             {
                 Console.WriteLine(Globals.ContentRootPath);
-                Console.WriteLine(Globals.ExtensionsPath); 
+                Console.WriteLine(Globals.ExtensionsPath);
                 permissionRepository.Add(new Permission { Product = "Security", FunctionName = "List Roles", Code = "test", Name = "View Role", RowVersion = 1 });
 
                 var permissionResult = permissionRepository.SaveChangesAsync().Result;
